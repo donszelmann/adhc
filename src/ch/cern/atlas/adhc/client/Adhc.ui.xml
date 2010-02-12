@@ -1,0 +1,11 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:adhc='urn:import:ch.cern.atlas.adhc.client'>
+
+	<g:VerticalPanel ui:field='details'>
+		<g:HorizontalPanel>
+			<g:Label>ATLAS Point 1 Shifts</g:Label>
+			<g:Label>12 Feb 2010</g:Label>
+			<g:Label>15:04</g:Label>
+		</g:HorizontalPanel>
+	</g:VerticalPanel>
+</ui:UiBinder>

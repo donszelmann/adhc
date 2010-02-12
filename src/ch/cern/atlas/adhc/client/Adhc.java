@@ -1,5 +1,9 @@
 package ch.cern.atlas.adhc.client;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import ch.cern.atlas.adhc.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -11,12 +15,17 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -24,7 +33,6 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -33,6 +41,15 @@ import com.google.gwt.user.datepicker.client.DatePicker;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Adhc implements EntryPoint {
+	@UiField
+	VerticalPanel details;
+
+	@UiTemplate("Adhc.ui.xml")
+	interface Binder extends UiBinder<VerticalPanel, Adhc> {
+	}
+
+	private static final Binder binder = GWT.create(Binder.class);
+
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
@@ -48,28 +65,77 @@ public class Adhc implements EntryPoint {
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
+	private List<Entry> shiftTable[];
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		// Navigation
+		shiftTable = new List[8];
+		shiftTable[0] = new ArrayList<Entry>();
+		shiftTable[0].add(new Entry());
+
+		shiftTable[1] = new ArrayList<Entry>();
+		shiftTable[1].add(new Entry());
+		shiftTable[1].add(new Entry());
+		shiftTable[1].add(new Entry());
+
+		shiftTable[2] = new ArrayList<Entry>();
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+		shiftTable[2].add(new Entry());
+
+		shiftTable[3] = new ArrayList<Entry>();
+		shiftTable[3].add(new Entry());
+		shiftTable[3].add(new Entry());
+		shiftTable[3].add(new Entry());
+
+		shiftTable[4] = new ArrayList<Entry>();
+		shiftTable[4].add(new Entry());
+		shiftTable[4].add(new Entry());
+		shiftTable[4].add(new Entry());
+
+		shiftTable[5] = new ArrayList<Entry>();
+		shiftTable[5].add(new Entry());
+		shiftTable[5].add(new Entry());
+
+		shiftTable[6] = new ArrayList<Entry>();
+		shiftTable[6].add(new Entry());
+		shiftTable[6].add(new Entry());
+		shiftTable[6].add(new Entry());
+
+		shiftTable[7] = new ArrayList<Entry>();
+		shiftTable[7].add(new Entry());
+		shiftTable[7].add(new Entry());
+
 		
+		VerticalPanel details = binder.createAndBindUi(this);
+
+		// Navigation
 		StackLayoutPanel stackLayoutPanel = new StackLayoutPanel(Unit.EM);
 		stackLayoutPanel.setStyleName("gwt-StackLayoutPanel");
-//		stackLayoutPanel.setWidth("230");
+		// stackLayoutPanel.setWidth("230");
 		double headerSize = 2.3;
-		stackLayoutPanel.add(createShiftsPanel(), createHeader("Shifts", null), headerSize);
-		stackLayoutPanel.add(new HTML("that"), createHeader("That", null), headerSize);
-		stackLayoutPanel.add(new HTML("the other"), createHeader("The Other", null), headerSize);
+		stackLayoutPanel.add(createShiftsPanel(), createHeader("Shifts", null),
+				headerSize);
+		stackLayoutPanel.add(new HTML("that"), createHeader("That", null),
+				headerSize);
+		stackLayoutPanel.add(new HTML("the other"), createHeader("The Other",
+				null), headerSize);
 
 		// Create a three-pane layout with splitters.
 		SplitLayoutPanel splitlayoutPanel = new SplitLayoutPanel();
-		splitlayoutPanel.addWest(stackLayoutPanel, 128);
-		splitlayoutPanel.addWest(new Button("list"), 128);
-		splitlayoutPanel.addNorth(new Button("Header"), 384);
-		splitlayoutPanel.addSouth(new Button("Footer"), 384);
-		splitlayoutPanel.addEast(new Button("east"), 128);
-		splitlayoutPanel.add(new Button("details"));
+		splitlayoutPanel.addWest(stackLayoutPanel, 250);
+		// splitlayoutPanel.addWest(new Button("list"), 128);
+		// splitlayoutPanel.addNorth(new Button("Header"), 384);
+		// splitlayoutPanel.addSouth(new Button("Footer"), 384);
+		// splitlayoutPanel.addEast(new Button("east"), 128);
+		splitlayoutPanel.add(createShiftTable());
 
 		// Attach the LayoutPanel to the RootLayoutPanel. The latter will listen
 		// for
@@ -192,6 +258,67 @@ public class Adhc implements EntryPoint {
 		nameField.addKeyUpHandler(handler);
 	}
 
+	private Widget createShiftTable() {
+		FlexTable table = new FlexTable();
+		table.setStylePrimaryName("controlroom");
+		
+		table.setWidget(0, 1, createTaskTable(shiftTable[0]));
+		table.getCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_TOP);
+		
+		table.setWidget(1, 0, createTaskTable(shiftTable[1]));
+		table.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(1, 1, createTaskTable(shiftTable[2]));
+		table.getCellFormatter().setVerticalAlignment(1, 1, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(1, 2, createTaskTable(shiftTable[3]));
+		table.getCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(2, 0, createTaskTable(shiftTable[4]));
+		table.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(2, 1, createTaskTable(shiftTable[5]));
+		table.getCellFormatter().setVerticalAlignment(2, 1, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(2, 2, createTaskTable(shiftTable[6]));
+		table.getCellFormatter().setVerticalAlignment(2, 2, HasVerticalAlignment.ALIGN_TOP);
+
+		table.setWidget(3, 1, createTaskTable(shiftTable[7]));
+		table.getCellFormatter().setVerticalAlignment(3, 1, HasVerticalAlignment.ALIGN_TOP);
+
+		return table;
+	}
+
+	private Widget createTaskTable(List<Entry> entries) {
+		FlexTable table = new FlexTable();
+		// FIXME
+		table.setBorderWidth(1);
+		table.setStylePrimaryName("tasks");
+		int row = 0;
+		for (Iterator<Entry> i = entries.iterator(); i.hasNext(); ) {
+			Entry e = i.next();
+			
+			Widget task = new Hyperlink(e.getTaskName(), "TBD");
+			task.setStylePrimaryName("taskName");
+			table.setWidget(row, 0, task);
+			
+			Widget picture = e.getPicture();
+			picture.setStylePrimaryName("picture");
+			table.setWidget(row, 1, picture);
+			
+			Widget shifter = new Hyperlink(e.getName(), "TBD");
+			shifter.setStylePrimaryName("shifter");
+			table.setWidget(row, 2, shifter);
+			
+			Widget period = new Label(e.getPeriod());
+			period.setStylePrimaryName("period");
+			table.setWidget(row, 3, period);	
+			
+			row++;
+		}
+		return table;
+	}
+	
 	/**
 	 * Create the Shifts Panel.
 	 * 
@@ -204,8 +331,7 @@ public class Adhc implements EntryPoint {
 		type.add(new RadioButton(group, "Online"));
 		type.add(new RadioButton(group, "Offline"));
 		type.add(new RadioButton(group, "On Call"));
-		
-		
+
 		VerticalPanel shiftsPanel = new VerticalPanel();
 		shiftsPanel.setSpacing(4);
 		shiftsPanel.add(type);
@@ -215,8 +341,7 @@ public class Adhc implements EntryPoint {
 	}
 
 	/**
-	 * Get Widget of the header that includes an image and some
-	 * text.
+	 * Get Widget of the header that includes an image and some text.
 	 * 
 	 * @param text
 	 *            the header text
@@ -229,7 +354,8 @@ public class Adhc implements EntryPoint {
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.setSpacing(0);
 		panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		if (image != null) panel.add(new Image(image));
+		if (image != null)
+			panel.add(new Image(image));
 		Button headerText = new Button(text);
 		// FIXME
 		headerText.setStyleName("cw-StackPanelHeader");

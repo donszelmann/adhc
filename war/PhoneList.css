@@ -1,0 +1,218 @@
+body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 0.8em;
+	padding: 0px;
+	margin: 0px;
+}
+
+.container {
+	width: 1000px;
+	margin: 10px;
+}
+
+/* *************** Page header ************ */
+.pageHeader { /*
+	width: 100%;
+	background: #004080;
+	padding: 7px 10px 2px 10px;
+	*/
+	margin-bottom: 25px;
+	height: 47px;
+	padding: 0px;
+	display: block;
+}
+
+.pageHeader_atlasLogo {
+	width: 52;
+	background-image: url('images/menu-logo.png');
+	background-repeat: no-repeat;
+	height: 47px;
+	float: left;
+}
+
+.pageHeader_title {
+	background-image: url('images/menu-bgnd-normal.png');
+	background-repeat: repeat-x;
+	width: 938px;
+	height: 47px;
+	float: left;
+	color: #ffffff;
+	font-size: 25px;
+	font-weight: bold;
+	padding-top: 7px;
+}
+
+.pageHeader_end {
+	background-image: url('images/menu-bgnd-end.png');
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 47px;
+	float: left;
+	clear: right;
+}
+
+.pageHeader h1 {
+	color: #ffffff;
+	/*color: #183b7b;*/
+}
+
+.phoneListHeading {
+	float: left;
+	clear: both;
+	margin: 30px 0px 15 0px;
+}
+
+/* *************** Shift crew details page ************ */ /*
+These classes are set from within the javascript that parses the dynamic
+information from the server when it generates the separate page containing
+information about a shift crew.
+*/
+.teamDetailsHeader {
+	margin: 10px;
+}
+
+.teamDetailsPanel {
+	
+}
+
+.person {
+	float: left;
+	clear: both;
+	margin: 10px;
+}
+
+.personPhoto {
+	width: 120px;
+	height: 150px;
+	float: left;
+	clear: left;
+}
+
+.personDetails {
+	float: left;
+	clear: right;
+	margin-left: 10px;
+}
+
+/* *************** Shift crew ************ */
+.taskName {
+/*	width: 35%; */
+	font-weight: bold;
+	background-color: #deedfd;
+}
+
+.shifters {
+	background-color: #eeece0;
+}
+
+.taskName,.shifters {
+	border-bottom: solid 1px white;
+	padding: 5px;
+	font-size: 1.0em;
+}
+
+.picture {
+	width: 60px;
+	height: 60px;
+}	
+
+.period {
+/*	width: 10%; */
+	border-bottom: solid 1px white;
+	padding: 5px;
+	font-size: 0.5em;	
+}
+
+/* *************** The cells in the table ************ */
+.controlroom {
+	border-width: 1px 1px 1px 1px;
+	border-color: white;
+	border-style: solid;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.tasks {
+	width: 100%;
+}
+
+/*
+The grid is made up of table cells with upper and right borders. In order to
+remove the outer borders around the table, the cells along the uppder and
+right edges have one or both of the borders removed. The same customization
+is done for padding within the cells to remove padding along the outer edge
+of the table. Thus the need for separate classes depending on their possition
+in the table.
+*/
+.cell,.leftSide,.middle,.bottomMiddle {
+	margin: 0;
+	border-width: 1px 1px 0px 0px;
+}
+
+.topLeftCorner {
+	border-width: 0px 1px 0px 0px;
+	padding: 0px 10px 10px 0px;
+}
+
+.topMiddle {
+	border-width: 0px 1px 0px 0px;
+	padding: 0px 10px 10px 10px;
+}
+
+.topRightCorner {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 10px 0px;
+}
+
+.leftSide {
+	padding: 10px 10px 10px 0px;
+}
+
+.rightSide {
+	border-width: 1px 0px 0px 0px;
+	padding: 10px 0px 10px 10px;
+}
+
+.middle {
+	padding: 10px 10px 10px 10px;
+}
+
+.bottomRightCorner {
+	border-width: 1px 0px 0px 0px;
+	padding: 10px 0px 0px 10px;
+}
+
+.bottomMiddle {
+	padding: 10px 10px 0px 10px;
+}
+
+.cell,.topLeftCorner,.topMiddle,.topRightCorner,.leftSide,.rightSide,.middle,.bottomRightCorner,.bottomMiddle
+	{
+	border-color: #7190c7;
+	border-style: solid;
+	width: 360px;
+}
+
+/*
+Styles for the tooltip displayed when you mouse-over the current shifters.
+*/
+a.tooltip:hover {
+	background: #eeece0; /*BG color is a must for IE6*/
+	text-decoration: none;
+}
+
+a.tooltip span {
+	display: none;
+	padding: 2px 3px;
+	margin-left: 8px;
+}
+
+a.tooltip:hover span {
+	margin-top: 25px;
+	margin-left: -100px;
+	display: inline;
+	position: absolute;
+	border: 1px solid #cccccc;
+	background: #ffffff;
+	color: #2F4F4F;
+}
